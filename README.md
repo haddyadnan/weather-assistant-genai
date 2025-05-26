@@ -17,13 +17,33 @@ Weather Assistant GenAI is a weather forecasting tool powered by Google's Gemini
 
 ## Requirements
 
+### Setting Up and Activating a Virtual Environment (Recommended)
+
+It's recommended to use a virtual environment to manage dependencies for this project.
+
+#### For macOS/Linux
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+#### For Windows
+
+```bash
+python -m venv venv
+venv\Scripts\activate
+```
+
 Install the required dependencies using the `requirements.txt` file:
 
 ```bash
-pip install -r requirement.py
+pip install -r requirement.txt
 ```
 
-Get your Gemini API KEY [HERE](https://aistudio.google.com/app/apikey)
+You'll need Google Gemini API KEY
+
+You can get your Gemini API KEY [HERE](https://aistudio.google.com/app/apikey)
 
 # Usage
 ### Running the Gradio Chat Interface
