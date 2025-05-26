@@ -2,6 +2,8 @@
 
 Weather Assistant GenAI is a weather forecasting tool powered by Google's Gemini AI and Prophet. It supports historical weather data lookup and future weather forecasts for selected cities through natural language queries. The tool can be run via a Gradio chat interface or directly from the command line.
 
+![Gradio Chat Interface](images/gradio_interface.png)
+
 ## Features
 
 - Retrieve historical weather data for supported cities.
