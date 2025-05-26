@@ -4,3 +4,5 @@ numpy==2.0.1
 pandas
 gradio
 plotly
+jupyterlab
+pyarrow
