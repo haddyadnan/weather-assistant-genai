@@ -1,0 +1,6 @@
+prophet==1.1.6
+google-genai
+numpy==2.0.1
+pandas
+gradio
+plotly
