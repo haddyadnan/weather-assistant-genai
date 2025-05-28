@@ -33,6 +33,11 @@ except Exception as e:
 def next_day_weather_forecast(city: str) -> Union[Dict[float, float], str]:
     """
     Provides a weather forecast for a specific city on a specific date.
+    Uncertainty Estimation:
+    The forecast includes a 95% prediction interval for each value.
+    This interval (shown as *_pi_lower and *_pi_upper) represents the range within which a future observation
+    is expected to fall, considering uncertainty in trend, seasonality, and noise.
+
 
     Args:
         city (str): The name of the city for which to retrieve the forecast. 
@@ -57,14 +62,24 @@ def next_day_weather_forecast(city: str) -> Union[Dict[float, float], str]:
 
     future = temp_model.make_future_dataframe(periods=1)
     
-    temp_forecast, precip_forecast = temp_model.predict(future)['yhat'].tail(1).iloc[0].round(1), \
-        precip_model.predict(future)['yhat'].tail(1).iloc[0].round(1)
+    temp, precip = temp_model.predict(future), precip_model.predict(future)
     
+    temp_forecast, precip_forecast = temp['yhat'].tail(1).iloc[0].round(1), \
+        precip['yhat'].tail(1).iloc[0].round(1)
+    
+    temp_forecast_lower_bound, precip_forecast_lower_bound = temp['yhat_lower'].tail(1).iloc[0].round(1), \
+        precip['yhat_lower'].tail(1).iloc[0].round(1)
 
-    return {"predicted_average_temperature": round(float(temp_forecast), 1), "predicted_precipitation": round(float(precip_forecast),1)}
+    temp_forecast_upper_bound, precip_forecast_upper_bound = temp['yhat_upper'].tail(1).iloc[0].round(1), \
+        precip['yhat_upper'].tail(1).iloc[0].round(1)
 
-# This could be better done with an API call to weather service, but for the sake of the scope, we will use historical data from a CSV file.
-
+    return {"predicted_average_temperature": round(float(temp_forecast), 1),
+            "predicted_average_temperature_lower_bound": round(float(temp_forecast_lower_bound), 1),
+            "predicted_average_temperature_upper_bound": round(float(temp_forecast_upper_bound), 1),
+            "predicted_precipitation": round(float(precip_forecast),1),
+            "predicted_precipitation_lower_bound": round(float(precip_forecast_lower_bound), 1),
+            "predicted_precipitation_upper_bound": round(float(precip_forecast_upper_bound), 1),
+           }
 def retrieve_data_from_historical_date(city: str, date: str) -> Union[Dict[float, float], str]:
 
     """
@@ -116,6 +131,10 @@ def forecast_data_for_future_date(city: str, date: str) -> Union[Dict[float, flo
     
     f"""
     Generates a weather forecast for a future date beyond the available historical data for supported cities.
+    Uncertainty Estimation:
+    The forecast includes a 95% prediction interval for each value.
+    This interval (shown as *_pi_lower and *_pi_upper) represents the range within which a future observation
+    is expected to fall, considering uncertainty in trend, seasonality, and noise.
 
     Args:
         city (str): The name of the city to generate the forecast for. 
@@ -166,11 +185,24 @@ def forecast_data_for_future_date(city: str, date: str) -> Union[Dict[float, flo
 
     future = temp_model.make_future_dataframe(periods=period)
     
-    temp_forecast, precip_forecast = temp_model.predict(future)['yhat'].tail(1).iloc[0].round(1), \
-        precip_model.predict(future)['yhat'].tail(1).iloc[0].round(1)
+    temp, precip = temp_model.predict(future), precip_model.predict(future)
+    
+    temp_forecast, precip_forecast = temp['yhat'].tail(1).iloc[0].round(1), \
+        precip['yhat'].tail(1).iloc[0].round(1)
+    
+    temp_forecast_lower_bound, precip_forecast_lower_bound = temp['yhat_lower'].tail(1).iloc[0].round(1), \
+        precip['yhat_lower'].tail(1).iloc[0].round(1)
 
-    return {"predicted_average_temperature": round(float(temp_forecast), 1), "predicted_precipitation": round(float(precip_forecast),1)}
+    temp_forecast_upper_bound, precip_forecast_upper_bound = temp['yhat_upper'].tail(1).iloc[0].round(1), \
+        precip['yhat_upper'].tail(1).iloc[0].round(1)
 
+    return {"predicted_average_temperature": round(float(temp_forecast), 1),
+            "predicted_average_temperature_lower_bound": round(float(temp_forecast_lower_bound), 1),
+            "predicted_average_temperature_upper_bound": round(float(temp_forecast_upper_bound), 1),
+            "predicted_precipitation": round(float(precip_forecast),1),
+            "predicted_precipitation_lower_bound": round(float(precip_forecast_lower_bound), 1),
+            "predicted_precipitation_upper_bound": round(float(precip_forecast_upper_bound), 1),
+           }
 # forecast_data_for_future_date('abidjan', '2025-05-20')
 # retrieve_data_from_historical_date('abidjan', '1973-06-01')
 # next_day_weather_forecast('abidjan')
