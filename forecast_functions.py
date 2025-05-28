@@ -6,9 +6,14 @@ from typing import Union, Dict
 import pickle
 import pandas as pd
 
+
+# Include more clarity to avoid overlap with future_date_forecast function
+# Next day is made to be absolute - i.e the day after the data ends
+# Not relative to the current date i.e {today.date + 1 day}
+# Might need a rethink but currently this is the intent
 def next_day_weather_forecast(city: str) -> Union[Dict[float, float], str]:
     """
-    Provides a weather forecast for a specific city on a specific date.
+    Provides a weather forecast for a specific city for the next day.
     Uncertainty Estimation:
     The forecast includes a 95% prediction interval for each value.
     This interval (shown as *_pi_lower and *_pi_upper) represents the range within which a future observation
