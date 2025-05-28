@@ -63,6 +63,8 @@ def next_day_weather_forecast(city: str) -> Union[Dict[float, float], str]:
 
     return {"predicted_average_temperature": round(float(temp_forecast), 1), "predicted_precipitation": round(float(precip_forecast),1)}
 
+# This could be better done with an API call to weather service, but for the sake of the scope, we will use historical data from a CSV file.
+
 def retrieve_data_from_historical_date(city: str, date: str) -> Union[Dict[float, float], str]:
 
     """
